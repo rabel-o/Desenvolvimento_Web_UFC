@@ -1,0 +1,42 @@
+O problema de Props Drilling ocorre quando você precisa passar dados de um componente de nível superior para um componente de nível inferior através de vários componentes intermediários que não precisam desses dados. Isso pode tornar o código difícil de manter e entender.
+
+O uso de Contextos no React pode resolver esse problema ao permitir que você compartilhe dados entre componentes sem a necessidade de passar props manualmente em cada nível da árvore de componentes.
+
+Exemplo:
+
+// Criando um contexto
+const UserContext = React.createContext();
+
+// Componente de nível superior que fornece o contexto
+const App = () => {
+  const user = { name: 'John Doe', age: 30 };
+
+  return (
+    <UserContext.Provider value={user}>
+      <UserProfile />
+    </UserContext.Provider>
+  );
+};
+
+// Componente intermediário que não precisa dos dados do usuário
+const UserProfile = () => {
+  return (
+    <div>
+      <UserDetails />
+    </div>
+  );
+};
+
+// Componente de nível inferior que consome o contexto
+const UserDetails = () => {
+  const user = React.useContext(UserContext);
+
+  return (
+    <div>
+      <p>Name: {user.name}</p>
+      <p>Age: {user.age}</p>
+    </div>
+  );
+};
+
+Aqui, o componente UserDetails acessa os dados do usuário diretamente do UserContext, sem que UserProfile precise passar esses dados como props. Isso simplifica a passagem de dados e reduz o acoplamento entre componentes.
